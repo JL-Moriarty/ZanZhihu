@@ -1,5 +1,5 @@
+# -*- coding: UTF-8 -*-
 __author__ = 'Wang'
-#encoding:utf-8
 
 '''
 知乎机器人
@@ -29,18 +29,17 @@ class ZhihuRobot:
             "remember": "y"
         }
         header = {
-            #"Accept": "\"*/*\"",
             "Accept-Encoding": "gzip, deflate",
             "Accept-Language": "en-US,en;q=0.8",
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
             "Pragma": "no-cache",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) "
-                          "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36",
             "X-Requested-With": "XMLHttpRequest"
         }
         try:
-            r_login = self.s.post("http://www.zhihu.com/login", data=data)
+            r_login = self.s.post("http://www.zhihu.com/login", data=data, headers=header)
             #print(r_login.text)
         except Exception as e:
             print("login error")
@@ -52,21 +51,20 @@ class ZhihuRobot:
     # 点赞
     def zan(self, answer_url):
         r_user_answer = self.s.get(answer_url)
-        #print(r_user_answer.content)
         answer_id = BeautifulSoup(r_user_answer.content).findAll('div', attrs={'class': 'zm-item-answer '})
+        print (self._xsrf)
         for item in answer_id:
             print(item['data-aid'])
             data = {
                 'method': 'vote_up',
                 'params': {'answer_id': item['data-aid']},
-                '_xsrf': '04c3db26d83e1de7b382f27772522f99'
+                '_xsrf': self._xsrf
             }
             header = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 '
-                              '(KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) '
+                              'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36'
             }
-            print(requests.post('http://www.zhihu.com/node/AnswerVoteBarV2', data=data))
-        #print(answer_id)
+            print(self.s.post('http://www.zhihu.com/node/AnswerVoteBarV2', data=data, headers=header, timeout=10))
         return
 
 if __name__ == '__main__':
