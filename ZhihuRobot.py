@@ -10,6 +10,7 @@ __author__ = 'Wang'
 import sys
 import requests
 import json
+import ConfigParser
 from BeautifulSoup import BeautifulSoup
 from time import sleep
 
@@ -83,9 +84,20 @@ class ZhihuRobot:
 
         return
 
+    def textini(self):
+        cf = ConfigParser.ConfigParser()
+        cf.read('settings.ini')
+        headers = cf._sections['headers']
+        email = cf.get("info", "email")
+        password = cf.get("info", "password")
+        print(headers)
+        print(email)
+        print(password)
+
 if __name__ == '__main__':
     robot = ZhihuRobot('weimw0417@163.com', 'admin123456')
-    robot.login()
-    robot.zan('http://www.zhihu.com/people/wuxu92/answers')
+    #robot.login()
+    #robot.zan('http://www.zhihu.com/people/wuxu92/answers')
+    robot.textini()
 
 
