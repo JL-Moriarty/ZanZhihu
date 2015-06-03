@@ -25,7 +25,7 @@ class ZhihuRobot:
     # 构造函数 初始化用户名 密码 session _xsrf
     def __init__(self, username=0, password=0):
         self.cf = ConfigParser.ConfigParser()
-        self.cf.read('settings.ini')
+        self.cf.read('config.ini')
         if username == 0 and password == 0:
             self.username = self.cf.get("info", "email")
             self.password = self.cf.get("info", "password")
@@ -78,8 +78,8 @@ class ZhihuRobot:
         return
 
 if __name__ == '__main__':
-    robot = ZhihuRobot('english_a5@126.com', 'admin123456')
-    #robot = ZhihuRobot()
+    #robot = ZhihuRobot('english_a5@126.com', 'admin123456')
+    robot = ZhihuRobot()
     robot.login()
     robot.zan('http://www.zhihu.com/people/liu-yuan-bo-56/answers')
 
