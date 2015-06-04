@@ -77,10 +77,26 @@ class ZhihuRobot:
             sleep(5)
         return
 
+    # 感谢
+    def thanks(self, answer_url):
+        r_user_answer = self.s.get(answer_url)
+        answer_id = BeautifulSoup(r_user_answer.content).findAll('div', attrs={'class': 'zm-item-answer '})
+        _xsrf = BeautifulSoup(r_user_answer.content).find('input', attrs={'name': '_xsrf'})['value']
+        for item in answer_id:
+            data = {
+                'aid': item['data-aid'],
+                '_xsrf': _xsrf
+            }
+            headers = dict(self.cf._sections['headers'])
+            print(self.s.post('http://www.zhihu.com/answer/thanks', data=data, headers=headers))
+            sleep(5)
+        return
+
 if __name__ == '__main__':
     #robot = ZhihuRobot('english_a5@126.com', 'admin123456')
     robot = ZhihuRobot()
     robot.login()
-    robot.zan('http://www.zhihu.com/people/liu-yuan-bo-56/answers')
+    #robot.zan('http://www.zhihu.com/people/liu-yuan-bo-56/answers')
+    robot.thanks('http://www.zhihu.com/people/mingwei-wei/answers')
 
 
