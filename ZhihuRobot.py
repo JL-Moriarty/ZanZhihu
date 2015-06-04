@@ -92,11 +92,20 @@ class ZhihuRobot:
             sleep(5)
         return
 
+    # 读取多个用户
+    def test_muluser(self):
+        userlist = self.cf.get("user-list", "username").split(",")
+        passwordlist = self.cf.get("password-list", "password").split(",")
+        for i in range(len(userlist)):
+            print(userlist[i], passwordlist[i])
+        return
+
 if __name__ == '__main__':
     #robot = ZhihuRobot('english_a5@126.com', 'admin123456')
     robot = ZhihuRobot()
-    robot.login()
+    #robot.login()
     #robot.zan('http://www.zhihu.com/people/liu-yuan-bo-56/answers')
-    robot.thanks('http://www.zhihu.com/people/mingwei-wei/answers')
+    #robot.thanks('http://www.zhihu.com/people/mingwei-wei/answers')
+    robot.test_muluser()
 
 
