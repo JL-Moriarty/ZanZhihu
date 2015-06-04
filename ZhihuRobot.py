@@ -103,9 +103,9 @@ class ZhihuRobot:
 if __name__ == '__main__':
     #robot = ZhihuRobot('english_a5@126.com', 'admin123456')
     robot = ZhihuRobot()
-    #robot.login()
-    #robot.zan('http://www.zhihu.com/people/liu-yuan-bo-56/answers')
+    robot.login()
+    robot.zan('http://www.zhihu.com/people/liu-yuan-bo-56/answers')
     #robot.thanks('http://www.zhihu.com/people/mingwei-wei/answers')
-    robot.test_muluser()
+    #robot.test_muluser()
 
 
