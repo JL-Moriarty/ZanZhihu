@@ -100,16 +100,17 @@ class ZhihuRobot:
             print(userlist[i], passwordlist[i])
         return
 
-    # 获取特定用户所有回答页面
+    # 获取特定用户所有回答页面，对所有回答点赞
     def zan_allanswer(self, answer_url):
         r_user_answer = self.s.get(answer_url)
         zm_invite_pager = BeautifulSoup(r_user_answer.content).find("div", attrs={"class": "zm-invite-pager"})
         if zm_invite_pager == "":
             return answer_url
         else:
-            if zm_invite_pager.find("span")['value'] == "上一页":
-                t = zm_invite_pager.find("span")[-2]
-
+            if zm_invite_pager.find("span", attrs={"class": "zg-gray-normal"}).getText() == u'上一页':
+                answer_pagenum = int(zm_invite_pager.findAll("span")[-2].find('a').getText())
+                for i in range(answer_pagenum):
+                    self.zan(answer_url + '?page=' + str(i+1))
         return
 
 if __name__ == '__main__':
@@ -117,8 +118,8 @@ if __name__ == '__main__':
     robot = ZhihuRobot()
     robot.login()
     #robot.zan('http://www.zhihu.com/people/liu-yuan-bo-56/answers')
-    robot.thanks('http://www.zhihu.com/people/mingwei-wei/answers')
+    #robot.thanks('http://www.zhihu.com/people/mingwei-wei/answers')
     #robot.test_muluser()
-    #robot.zan_allanswer('http://www.zhihu.com/people/ccbikai/answers')
+    robot.zan_allanswer('http://www.zhihu.com/people/ccbikai/answers')
 
 
