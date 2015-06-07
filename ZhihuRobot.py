@@ -8,7 +8,9 @@ __author__ = 'Wang'
 
 知乎的赞统计似乎不是实时的
 当下点了一堆赞要在隔较长时间（一天左右）后又有人点了个赞时才将当前两次的赞数汇总到个人主页总赞数
-刚试了一下又实时更新了 啊啊啊什么鬼
+实践表明上述观点是错误的 不过知乎的赞统计的确更新比较慢
+刚试了一下又实时更新了 啊啊啊什么鬼 不理解了 问题搁置
+留坑待填
 
 知乎的感谢数是实时更新的
 '''
@@ -92,14 +94,6 @@ class ZhihuRobot:
             sleep(5)
         return
 
-    # 读取多个用户
-    def test_muluser(self):
-        userlist = self.cf.get("user-list", "username").split(",")
-        passwordlist = self.cf.get("password-list", "password").split(",")
-        for i in range(len(userlist)):
-            print(userlist[i], passwordlist[i])
-        return
-
     # 获取特定用户所有回答页面，对所有回答点赞
     def zan_allanswer(self, answer_url):
         r_user_answer = self.s.get(answer_url)
@@ -114,12 +108,25 @@ class ZhihuRobot:
         return
 
 if __name__ == '__main__':
+
+    '''
+    # 单用户给特定用户所有回答点赞
     #robot = ZhihuRobot('english_a5@126.com', 'admin123456')
     robot = ZhihuRobot()
     robot.login()
+    # 给特定用户某页所有回答点赞
     #robot.zan('http://www.zhihu.com/people/liu-yuan-bo-56/answers')
-    #robot.thanks('http://www.zhihu.com/people/mingwei-wei/answers')
-    #robot.test_muluser()
-    robot.zan_allanswer('http://www.zhihu.com/people/ccbikai/answers')
+    robot.thanks('http://www.zhihu.com/people/username/answers')
+    robot.zan_allanswer('http://www.zhihu.com/people/username/answers')
+    '''
 
-
+    # 从config.ini获取用户组，给特定用户所有问答点赞
+    cf = ConfigParser.ConfigParser()
+    cf.read("config.ini")
+    userlist = cf.get("user-list", "username").split(",")
+    passwordlist = cf.get("password-list", "password").split(",")
+    for i in range(len(userlist)):
+        print(userlist[i], passwordlist[i])
+        robot = ZhihuRobot(userlist[i], passwordlist[i])
+        robot.login()
+        robot.zan_allanswer('http://www.zhihu.com/people/username/answers')
